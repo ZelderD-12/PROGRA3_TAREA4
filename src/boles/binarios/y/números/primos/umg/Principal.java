@@ -1,15 +1,23 @@
 package boles.binarios.y.números.primos.umg;
 
+import Modelos.ModeloPrimos;
 import arbol.ArbolBB;
 import arbol.ArbolExpresionGrafico;
 import arbol.SimuladorArbolBinario;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
 public class Principal extends javax.swing.JFrame {
     private SimuladorArbolBinario simulador; // Instancia del simulador
-    private GeneradorPrimos generador; // Instancia del generador de números primos
+    ModeloPrimos modelo;
+    GeneradorNumeros generadorprimoss;
     private Thread hiloGenerador; // Hilo para generar números primos
 
 
@@ -21,7 +29,7 @@ public class Principal extends javax.swing.JFrame {
 
         // Crear el panel de dibujo del árbol y asignarlo al JScrollPane
         JPanel panelArbol = simulador.getDibujo(jScrollPane3, this.jPanel2);
-        simulador.insertar(50);
+       simulador.insertar(50);
         simulador.insertar(30);
         simulador.insertar(70);
         simulador.insertar(20);
@@ -47,7 +55,6 @@ public class Principal extends javax.swing.JFrame {
         simulador.insertar(17);
         simulador.insertar(19);
      
-        
     }
 
 
@@ -62,6 +69,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         panelNumeros = new javax.swing.JPanel();
+        lblnumeroevaluando = new javax.swing.JLabel();
         txtNumeros = new javax.swing.JTextField();
         btnStart = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -85,7 +93,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 17)); // NOI18N
-        jLabel2.setText("Generadort de Números Primos");
+        jLabel2.setText("Generador de Números Primos");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 17)); // NOI18N
@@ -99,11 +107,17 @@ public class Principal extends javax.swing.JFrame {
         panelNumeros.setLayout(panelNumerosLayout);
         panelNumerosLayout.setHorizontalGroup(
             panelNumerosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNumerosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblnumeroevaluando, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelNumerosLayout.setVerticalGroup(
             panelNumerosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 248, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNumerosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblnumeroevaluando, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel1.add(panelNumeros, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 270, 250));
@@ -209,27 +223,48 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        // Boton Iniciar:
-        int cantidad = Integer.parseInt(txtNumeros.getText());
         
-        generador = new GeneradorPrimos(cantidad, 1_000_000); 
-        // Hilo 1: Generar los números primos
-        hiloGenerador = new Thread(() -> {
-            int[] primos = generador.generarPrimos();
-
-            // Hilo 2: Mostrar los números primos en el panel
-            Thread hiloPintar = new Thread(new PintarNumerosPrimos(panelNumeros, primos));
-            hiloPintar.start();
-        });
-        
-       hiloGenerador.start();
-       generador.imprimirCantidadPrimos();  
+        if(generadorprimoss != null){
+        if(!generadorprimoss.isAlive()){
+        int numerosolicitado = Integer.parseInt(txtNumeros.getText());
+       modelo = new ModeloPrimos();
+       modelo.setnumerolimite(numerosolicitado);
+       modelo.setnumeroevaluando(1);
+       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando);
+        generadorprimoss.start();
+        }else{
+            JOptionPane.showMessageDialog(null, "Tienes que esperar hasta que la solicitud anterior haya concluido.", "Espera", JOptionPane.ERROR_MESSAGE);
+        }
+        }else{
+          int numerosolicitado = Integer.parseInt(txtNumeros.getText());
+       modelo = new ModeloPrimos();
+       modelo.setnumerolimite(numerosolicitado);
+       modelo.setnumeroevaluando(1);
+       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando);
+        generadorprimoss.start();  
+        } 
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnGuardarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarImagenActionPerformed
-        //Boton guardar Imagen
-        PanelAImagen panelAImagen = new PanelAImagen(panelNumeros);
-        panelAImagen.guardarComoImagen("png"); 
+        if(lblnumeroevaluando.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null, "Ningún número ha sido evaluado o esta siendo evaluado", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }else{
+        // Crear un BufferedImage en el que se dibujará el JLabel
+        BufferedImage image = new BufferedImage(panelNumeros.getWidth(), panelNumeros.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.createGraphics();
+        
+        // Renderizar el JLabel en la imagen
+        panelNumeros.paint(g);
+        g.dispose();
+        
+        // Guardar la imagen en un archivo (opcional)
+        try {
+            ImageIO.write(image, "PNG", new File("./imagen#"+lblnumeroevaluando.getText()+".png"));
+            System.out.println("Imagen guardada como imagen#"+lblnumeroevaluando.getText()+".png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        }
     }//GEN-LAST:event_btnGuardarImagenActionPerformed
 
     /**
@@ -285,6 +320,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel lblnumeroevaluando;
     private javax.swing.JPanel panelNumeros;
     private javax.swing.JTextField txtBusqueda;
     private javax.swing.JTextField txtNumeros;
