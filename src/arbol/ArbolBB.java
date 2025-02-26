@@ -12,37 +12,105 @@ public class ArbolBB {
         raiz = null;
     }
 
-
-    // Método para agregar un número al árbol
-    public boolean agregar(Integer dato) {
-        if (raiz == null) {
-            raiz = new Nodo(dato);
-            return true;
-        } else {
-            return agregarRecursivo(raiz, dato);
+    // Método para obtener la altura de un nodo
+    private int altura(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
         }
+        return nodo.getAltura();
     }
 
-    // Método recursivo para agregar un número al árbol
-    private boolean agregarRecursivo(Nodo nodo, Integer dato) {
-        if (dato < nodo.getDato()) {
-            if (nodo.getIzq() == null) {
-                nodo.setIzq(new Nodo(dato));
-                return true;
-            } else {
-                return agregarRecursivo(nodo.getIzq(), dato);
-            }
-        } else if (dato > nodo.getDato()) {
-            if (nodo.getDer() == null) {
-                nodo.setDer(new Nodo(dato));
-                return true;
-            } else {
-                return agregarRecursivo(nodo.getDer(), dato);
-            }
-        } else {
-            // El dato ya existe en el árbol
-            return false;
+    // Método para calcular el balance de un nodo
+    private int getBalance(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
         }
+        return altura(nodo.getIzq()) - altura(nodo.getDer());
+    }
+
+    // Rotación simple a la derecha
+    private Nodo rotarDerecha(Nodo y) {
+        Nodo x = y.getIzq();
+        Nodo T2 = x.getDer();
+
+        // Realizar la rotación
+        x.setDer(y);
+        y.setIzq(T2);
+
+        // Actualizar alturas
+        y.setAltura(Math.max(altura(y.getIzq()), altura(y.getDer())) + 1);
+        x.setAltura(Math.max(altura(x.getIzq()), altura(x.getDer())) + 1);
+
+        return x;
+    }
+
+    // Rotación simple a la izquierda
+    private Nodo rotarIzquierda(Nodo x) {
+        Nodo y = x.getDer();
+        Nodo T2 = y.getIzq();
+
+        // Realizar la rotación
+        y.setIzq(x);
+        x.setDer(T2);
+
+        // Actualizar alturas
+        x.setAltura(Math.max(altura(x.getIzq()), altura(x.getDer())) + 1);
+        y.setAltura(Math.max(altura(y.getIzq()), altura(y.getDer())) + 1);
+
+        return y;
+    }
+
+    // Método para insertar un nodo de manera balanceada
+    private Nodo insertarBalanceado(Nodo nodo, int dato) {
+        // Inserción normal en un árbol binario de búsqueda
+        if (nodo == null) {
+            return new Nodo(dato);
+        }
+
+        if (dato < nodo.getDato()) {
+            nodo.setIzq(insertarBalanceado(nodo.getIzq(), dato));
+        } else if (dato > nodo.getDato()) {
+            nodo.setDer(insertarBalanceado(nodo.getDer(), dato));
+        } else {
+            return nodo; // No se permiten duplicados
+        }
+
+        // Actualizar la altura del nodo actual
+        nodo.setAltura(1 + Math.max(altura(nodo.getIzq()), altura(nodo.getDer())));
+
+        // Obtener el factor de balance
+        int balance = getBalance(nodo);
+
+        // Casos de desbalance
+        // Rotación simple a la derecha
+        if (balance > 1 && dato < nodo.getIzq().getDato()) {
+            return rotarDerecha(nodo);
+        }
+
+        // Rotación simple a la izquierda
+        if (balance < -1 && dato > nodo.getDer().getDato()) {
+            return rotarIzquierda(nodo);
+        }
+
+        // Rotación izquierda-derecha
+        if (balance > 1 && dato > nodo.getIzq().getDato()) {
+            nodo.setIzq(rotarIzquierda(nodo.getIzq()));
+            return rotarDerecha(nodo);
+        }
+
+        // Rotación derecha-izquierda
+        if (balance < -1 && dato < nodo.getDer().getDato()) {
+            nodo.setDer(rotarDerecha(nodo.getDer()));
+            return rotarIzquierda(nodo);
+        }
+
+        return nodo;
+    }
+
+    // Método público para agregar un dato al árbol
+    public boolean agregar(int dato) {
+        raiz = insertarBalanceado(raiz, dato);
+        return true;
     }
 
     // Métodos de recorrido (preOrden, inOrden, postOrden)
@@ -117,8 +185,8 @@ public class ArbolBB {
         panel.repaint(); // Repinta el panel
     }
 
+    // Método para obtener la raíz del árbol
     public Nodo getRaiz() {
         return raiz;
     }
-    
 }
