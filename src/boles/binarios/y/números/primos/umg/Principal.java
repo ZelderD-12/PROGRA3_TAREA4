@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 
@@ -35,7 +36,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
 
-  
+ 
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -309,17 +310,34 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarImagenActionPerformed
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
-        modelo.setnumeroprimo(Integer.parseInt(txtBusqueda.getText()));
-        simulador.getDibujo(this.jScrollPane3, this.jPanel2);
-        for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
-            System.out.println("" + modelo.getnumeroprimo(y));
-            simulador.insertar(modelo.getnumeroprimo(y));
-        }   
-        System.out.println("---------------------");
+        // Verificar si el campo de texto está vacío
+    if (txtBusqueda.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        // Obtener el número desde el campo de texto
+        int numero = Integer.parseInt(txtBusqueda.getText().trim());
+
+        // Verificar si el hilo está activo
+        if (generadorprimoss != null && generadorprimoss.isAlive()) {
+            // Si el hilo está activo, insertar el número primero
+            generadorprimoss.insertarPrimero(numero);
+        } else {
+            // Si el hilo no está activo, insertar el número normalmente
+            generadorprimoss.insertar(numero);
+        }
+
+        // Limpiar el campo de texto después de la inserción
+        txtBusqueda.setText("");
+        } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+       }
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void brtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtnBuscarActionPerformed
-if(modelo.getnoexistelista()){
+    if(modelo.getnoexistelista()){
            JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
        }else{
            simulador.buscar(Integer.parseInt(txtBusqueda.getText()));
