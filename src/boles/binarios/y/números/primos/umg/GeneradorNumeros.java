@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boles.binarios.y.números.primos.umg;
 
 import Modelos.ModeloPrimos;
@@ -16,13 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class GeneradorNumeros extends Thread{
-    private ModeloPrimos modelo;
+    final ModeloPrimos modelo;
     private int cantidadaciertos = 0;
-    private JLabel texto;
-    private SimuladorArbolBinario simulador;
+    final JLabel texto;
+    final SimuladorArbolBinario simulador;
     final Random r=new Random();
-    private JScrollPane spane;
-    private JPanel pane;
+    final JScrollPane spane;
+    final JPanel pane;
     public GeneradorNumeros(ModeloPrimos modelo, JLabel texto, JScrollPane spane, JPanel pane){
         simulador = new SimuladorArbolBinario();
         this.modelo = modelo;
@@ -36,11 +31,11 @@ public class GeneradorNumeros extends Thread{
        try{
         //variables para cambiar fuentes
         Font[] fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-        int indiceFuente = 0;
-        int tamanioFuente = 0;
+        int indiceFuente;
+        int tamanioFuente;
         
         while(!Thread.interrupted() && (modelo.gettamaniolistaprimos() < modelo.getnumerolimite())){
-            Thread.sleep(500);
+            Thread.sleep(400);
             indiceFuente = r.nextInt(fuentes.length);
                 tamanioFuente = (int) Math.round(Math.random() * (90 - 20 + 1) + 20);
                 Font fuente = new Font(fuentes[indiceFuente].getFontName(), Font.PLAIN, tamanioFuente);
@@ -75,16 +70,10 @@ public class GeneradorNumeros extends Thread{
                 simulador.insertar(modelo.getnumeroevaluando());
             }
             cantidadaciertos = 0;
-            System.out.println("" + modelo.getnumeroevaluando());
             modelo.setnumeroevaluando(modelo.getnumeroevaluando()+1);
         }
-        /*
-        for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
-            System.out.println("" + modelo.getnumeroprimo(y));
-            simulador.insertar(modelo.getnumeroprimo(y));
-        }*/
         
         cantidadaciertos = 0;
-        }catch(Exception ex){ System.out.println("" + ex);}
+        }catch(InterruptedException ex){ System.out.println("" + ex);}
     }
 }
