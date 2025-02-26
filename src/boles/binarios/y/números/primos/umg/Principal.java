@@ -280,12 +280,11 @@ public class Principal extends javax.swing.JFrame {
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         
         modelo.setnumeroprimo(Integer.parseInt(txtBusqueda.getText()));
-        simulador.getDibujo(jScrollPane3, this.jPanel2);
+        simulador.getDibujo(this.jScrollPane3, this.jPanel2);
         for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
             System.out.println("" + modelo.getnumeroprimo(y));
             simulador.insertar(modelo.getnumeroprimo(y));
-        }
-     
+        }   
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void brtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtnBuscarActionPerformed
