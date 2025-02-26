@@ -27,7 +27,7 @@ public class Principal extends javax.swing.JFrame {
         // Inicializar el simulador
         simulador = new SimuladorArbolBinario();
 
-        // Crear el panel de dibujo del árbol y asignarlo al JScrollPane
+       /* // Crear el panel de dibujo del árbol y asignarlo al JScrollPane
         JPanel panelArbol = simulador.getDibujo(jScrollPane3, this.jPanel2);
        simulador.insertar(50);
         simulador.insertar(30);
@@ -54,7 +54,7 @@ public class Principal extends javax.swing.JFrame {
         simulador.insertar(16);
         simulador.insertar(17);
         simulador.insertar(19);
-     
+     */
     }
 
 
@@ -147,9 +147,19 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.add(txtBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 350, 110, 30));
 
         brtnBuscar.setText("Busqueda");
+        brtnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brtnBuscarActionPerformed(evt);
+            }
+        });
         jPanel1.add(brtnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, 140, 40));
 
         btnInsertar.setText("Insertar");
+        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnInsertar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 380, 140, 40));
 
         btnEliminar.setText("Eliminar");
@@ -230,7 +240,7 @@ public class Principal extends javax.swing.JFrame {
        modelo = new ModeloPrimos();
        modelo.setnumerolimite(numerosolicitado);
        modelo.setnumeroevaluando(1);
-       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando);
+       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
         generadorprimoss.start();
         }else{
             JOptionPane.showMessageDialog(null, "Tienes que esperar hasta que la solicitud anterior haya concluido.", "Espera", JOptionPane.ERROR_MESSAGE);
@@ -240,7 +250,7 @@ public class Principal extends javax.swing.JFrame {
        modelo = new ModeloPrimos();
        modelo.setnumerolimite(numerosolicitado);
        modelo.setnumeroevaluando(1);
-       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando);
+       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
         generadorprimoss.start();  
         } 
     }//GEN-LAST:event_btnStartActionPerformed
@@ -266,6 +276,21 @@ public class Principal extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_btnGuardarImagenActionPerformed
+
+    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
+        
+        modelo.setnumeroprimo(Integer.parseInt(txtBusqueda.getText()));
+        simulador.getDibujo(jScrollPane3, this.jPanel2);
+        for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
+            System.out.println("" + modelo.getnumeroprimo(y));
+            simulador.insertar(modelo.getnumeroprimo(y));
+        }
+     
+    }//GEN-LAST:event_btnInsertarActionPerformed
+
+    private void brtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtnBuscarActionPerformed
+       simulador.buscar(Integer.parseInt(txtBusqueda.getText()));
+    }//GEN-LAST:event_brtnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
