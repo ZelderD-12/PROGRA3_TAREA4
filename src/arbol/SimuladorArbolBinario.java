@@ -55,12 +55,17 @@ public class SimuladorArbolBinario {
         return (r);
     }
 
-    // Método para buscar dato en el nodo
+    // Método para buscar dato en el nodo (devuelve un String)
     public String buscar(Integer dato) {
         boolean siEsta = this.miArbol.existe(dato);
         String r = "El dato:" + dato.toString() + "\n";
         r += siEsta ? "Si se encuentra en el árbol" : "No se encuentra en el árbol";
         return (r);
+    }
+
+    // Método para buscar dato en el nodo (devuelve un booleano)
+    public boolean buscarNumero(Integer dato) {
+        return this.miArbol.existe(dato);
     }
 
     // Método para obtener el panel de dibujo del árbol

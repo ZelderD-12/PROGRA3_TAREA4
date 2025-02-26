@@ -48,6 +48,11 @@ public class GeneradorNumeros extends Thread {
         simulador.getDibujo(this.spane, this.pane);
     }
 
+    // Método para buscar un número en el árbol
+     public boolean buscar(int numero) {
+       return simulador.buscarNumero(numero);
+     }
+
     @Override
     public void run() {
         try {
