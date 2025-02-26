@@ -70,16 +70,19 @@ public class GeneradorNumeros extends Thread{
             
             if(cantidadaciertos==2){
                 modelo.setnumeroprimo(modelo.getnumeroevaluando());
+                
+                simulador.getDibujo(this.spane, this.pane);
+                simulador.insertar(modelo.getnumeroevaluando());
             }
             cantidadaciertos = 0;
             System.out.println("" + modelo.getnumeroevaluando());
             modelo.setnumeroevaluando(modelo.getnumeroevaluando()+1);
         }
-        simulador.getDibujo(this.spane, this.pane);
+        /*
         for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
             System.out.println("" + modelo.getnumeroprimo(y));
             simulador.insertar(modelo.getnumeroprimo(y));
-        }
+        }*/
         
         cantidadaciertos = 0;
         }catch(Exception ex){ System.out.println("" + ex);}
