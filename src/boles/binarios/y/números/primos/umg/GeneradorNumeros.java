@@ -19,12 +19,16 @@ public class GeneradorNumeros extends Thread{
     private ModeloPrimos modelo;
     private int cantidadaciertos = 0;
     private JLabel texto;
+    private SimuladorArbolBinario simulador;
     final Random r=new Random();
-    public GeneradorNumeros(ModeloPrimos modelo, JLabel texto){
-        
+    private JScrollPane spane;
+    private JPanel pane;
+    public GeneradorNumeros(ModeloPrimos modelo, JLabel texto, JScrollPane spane, JPanel pane){
+        simulador = new SimuladorArbolBinario();
         this.modelo = modelo;
         this.texto = texto;
-        
+        this.pane = pane;
+        this.spane = spane;
     }
     
     @Override
@@ -37,9 +41,9 @@ public class GeneradorNumeros extends Thread{
         
         while(!Thread.interrupted() && (modelo.gettamaniolistaprimos() < modelo.getnumerolimite())){
             Thread.sleep(500);
-            indiceFuente = (int) Math.round(Math.random() * fuentes.length);
-                tamanioFuente = (int) Math.round(Math.random() * (150 - 60 + 1) + 60);
-                Font fuente = new Font(fuentes[indiceFuente-1].getFontName(), Font.PLAIN, tamanioFuente);
+            indiceFuente = r.nextInt(fuentes.length);
+                tamanioFuente = (int) Math.round(Math.random() * (90 - 20 + 1) + 20);
+                Font fuente = new Font(fuentes[indiceFuente].getFontName(), Font.PLAIN, tamanioFuente);
             
             this.texto.setFont(fuente);
                 this.texto.setText(""+modelo.getnumeroevaluando());
@@ -68,11 +72,15 @@ public class GeneradorNumeros extends Thread{
                 modelo.setnumeroprimo(modelo.getnumeroevaluando());
             }
             cantidadaciertos = 0;
+            System.out.println("" + modelo.getnumeroevaluando());
             modelo.setnumeroevaluando(modelo.getnumeroevaluando()+1);
         }
+        simulador.getDibujo(this.spane, this.pane);
         for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
             System.out.println("" + modelo.getnumeroprimo(y));
+            simulador.insertar(modelo.getnumeroprimo(y));
         }
+        
         cantidadaciertos = 0;
         }catch(Exception ex){ System.out.println("" + ex);}
     }
