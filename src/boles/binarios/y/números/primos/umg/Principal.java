@@ -3,22 +3,27 @@ package boles.binarios.y.números.primos.umg;
 import Modelos.ModeloPrimos;
 import arbol.ArbolBB;
 import arbol.ArbolExpresionGrafico;
+import arbol.Nodo;
 import arbol.SimuladorArbolBinario;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.text.JTextComponent;
 
 
 public class Principal extends javax.swing.JFrame {
     private SimuladorArbolBinario simulador; // Instancia del simulador
-    ModeloPrimos modelo;
-    GeneradorNumeros generadorprimoss;
-    private Thread hiloGenerador; // Hilo para generar números primos
+    private GeneradorNumeros generadorprimoss; // Declarar como variable de clase
+    private ModeloPrimos modelo;
+    private Integer numeroEspecifico = null;
+  
 
 
     public Principal() {
@@ -57,7 +62,18 @@ public class Principal extends javax.swing.JFrame {
      */
     }
 
-
+public boolean haTerminado() {
+    return modelo.gettamaniolistaprimos() >= modelo.getnumerolimite();
+}
+public void insertarNumeroPrimero(int numero) {
+    if (haTerminado()) {
+        // Si ya terminó la generación de primos, insertar el número de manera normal
+        simulador.insertar(numero);
+    } else {
+        // Si aún está generando primos, insertar el número primero
+        this.numeroEspecifico = numero;
+    }
+}
   
 
     @SuppressWarnings("unchecked")
@@ -233,26 +249,47 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        
-        if(generadorprimoss != null){
-        if(!generadorprimoss.isAlive()){
-        int numerosolicitado = Integer.parseInt(txtNumeros.getText());
-       modelo = new ModeloPrimos();
-       modelo.setnumerolimite(numerosolicitado);
-       modelo.setnumeroevaluando(1);
-       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
-        generadorprimoss.start();
-        }else{
-            JOptionPane.showMessageDialog(null, "Tienes que esperar hasta que la solicitud anterior haya concluido.", "Espera", JOptionPane.ERROR_MESSAGE);
+         if (generadorprimoss != null) {
+            if (!generadorprimoss.isAlive()) {
+                try {
+                    int numerosolicitado = Integer.parseInt(txtNumeros.getText().trim());
+                    if (numerosolicitado <= 0) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número mayor que 0.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Inicializar el modelo y el generador de números primos
+                    modelo = new ModeloPrimos();
+                    modelo.setnumerolimite(numerosolicitado);
+                    modelo.setnumeroevaluando(1);
+
+                    generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2, txtNumeros);
+                    generadorprimoss.start();
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe esperar a que la solicitud anterior haya concluido.", "Espera", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            try {
+                int numerosolicitado = Integer.parseInt(txtNumeros.getText().trim());
+                if (numerosolicitado <= 0) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un número mayor que 0.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Inicializar el modelo y el generador de números primos
+                modelo = new ModeloPrimos();
+                modelo.setnumerolimite(numerosolicitado);
+                modelo.setnumeroevaluando(1);
+
+                generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2, txtNumeros);
+                generadorprimoss.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        }else{
-          int numerosolicitado = Integer.parseInt(txtNumeros.getText());
-       modelo = new ModeloPrimos();
-       modelo.setnumerolimite(numerosolicitado);
-       modelo.setnumeroevaluando(1);
-       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
-        generadorprimoss.start();  
-        } 
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnGuardarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarImagenActionPerformed
@@ -278,17 +315,22 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarImagenActionPerformed
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
-        
-        modelo.setnumeroprimo(Integer.parseInt(txtBusqueda.getText()));
-        simulador.getDibujo(this.jScrollPane3, this.jPanel2);
-        for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
-            System.out.println("" + modelo.getnumeroprimo(y));
-            simulador.insertar(modelo.getnumeroprimo(y));
-        }   
+         if (generadorprimoss == null || !generadorprimoss.isAlive()) {
+        JOptionPane.showMessageDialog(null, "Primero debe iniciar la generación de números primos.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        int numeroEspecifico = Integer.parseInt(txtBusqueda.getText().trim());
+        generadorprimoss.insertarNumeroPrimero(numeroEspecifico); // Método para insertar el número primero
+        txtBusqueda.setText(""); // Limpiar el campo de texto después de la inserción
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void brtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtnBuscarActionPerformed
-       simulador.buscar(Integer.parseInt(txtBusqueda.getText()));
+     
     }//GEN-LAST:event_brtnBuscarActionPerformed
 
     /**
