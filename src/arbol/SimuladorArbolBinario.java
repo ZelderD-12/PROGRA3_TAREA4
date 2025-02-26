@@ -7,7 +7,7 @@ public class SimuladorArbolBinario {
 
     ArbolBB miArbol = new ArbolBB();
 
-    public SimuladorArbolBinario() {
+    public SimuladorArbolBinario() {        
     }
 
     public boolean insertar(Integer dato) {
@@ -52,5 +52,10 @@ public class SimuladorArbolBinario {
     // Método para obtener el panel de dibujo del árbol
     public JPanel getDibujo(JScrollPane scrollPane, JPanel panel) {
         return this.miArbol.getdibujo(scrollPane, panel);
+    }
+
+    // Método para repintar el árbol
+    public void repintarArbol(JPanel panel) {
+        this.miArbol.repintar(panel);
     }
 }
