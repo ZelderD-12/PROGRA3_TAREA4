@@ -331,13 +331,13 @@ public class Principal extends javax.swing.JFrame {
 
         // Limpiar el campo de texto después de la inserción
         txtBusqueda.setText("");
-    } catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
-      }
+       }
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void brtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtnBuscarActionPerformed
-if(modelo.getnoexistelista()){
+    if(modelo.getnoexistelista()){
            JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
        }else{
            simulador.buscar(Integer.parseInt(txtBusqueda.getText()));
