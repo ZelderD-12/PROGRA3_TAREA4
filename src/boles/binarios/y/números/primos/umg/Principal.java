@@ -26,7 +26,7 @@ public class Principal extends javax.swing.JFrame {
 
         // Inicializar el simulador
         simulador = new SimuladorArbolBinario();
-
+        
        /* // Crear el panel de dibujo del árbol y asignarlo al JScrollPane
         JPanel panelArbol = simulador.getDibujo(jScrollPane3, this.jPanel2);
        simulador.insertar(50);
