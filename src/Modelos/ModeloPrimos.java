@@ -42,4 +42,10 @@ public class ModeloPrimos {
     public int getnumeroevaluando(){
         return numeroevaluando;
     }
+    
+    public boolean getnoexistelista(){
+        return numerosprimos.isEmpty();
+    }
+    
+    
 }

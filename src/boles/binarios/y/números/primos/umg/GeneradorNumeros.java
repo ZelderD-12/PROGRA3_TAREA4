@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boles.binarios.y.números.primos.umg;
 
 import Modelos.ModeloPrimos;
@@ -15,76 +10,102 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class GeneradorNumeros extends Thread{
-    private ModeloPrimos modelo;
+public class GeneradorNumeros extends Thread {
+    final ModeloPrimos modelo;
     private int cantidadaciertos = 0;
-    private JLabel texto;
-    private SimuladorArbolBinario simulador;
-    final Random r=new Random();
-    private JScrollPane spane;
-    private JPanel pane;
-    public GeneradorNumeros(ModeloPrimos modelo, JLabel texto, JScrollPane spane, JPanel pane){
+    final JLabel texto;
+    final SimuladorArbolBinario simulador;
+    final Random r = new Random();
+    final JScrollPane spane;
+    final JPanel pane;
+    private Integer numeroEspecifico = null; // Número específico a insertar primero
+
+    public GeneradorNumeros(ModeloPrimos modelo, JLabel texto, JScrollPane spane, JPanel pane) {
         simulador = new SimuladorArbolBinario();
         this.modelo = modelo;
         this.texto = texto;
         this.pane = pane;
         this.spane = spane;
     }
-    
+
+    // Método para insertar un número específico primero
+    public void insertarPrimero(int numero) {
+        this.numeroEspecifico = numero;
+    }
+
+    // Método para insertar un número en el árbol
+    public void insertar(int numero) {
+        if (numeroEspecifico != null) {
+            // Si hay un número específico, insertarlo primero
+            simulador.insertarPrimero(numeroEspecifico, numero);
+            numeroEspecifico = null; // Reiniciar la variable después de usarla
+        } else {
+            // Si no hay un número específico, insertar el número normal
+            simulador.insertar(numero);
+        }
+
+        // Actualizar la vista del árbol
+        simulador.getDibujo(this.spane, this.pane);
+    }
+
     @Override
-    public void run(){
-       try{
-        //variables para cambiar fuentes
-        Font[] fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-        int indiceFuente = 0;
-        int tamanioFuente = 0;
-        
-        while(!Thread.interrupted() && (modelo.gettamaniolistaprimos() < modelo.getnumerolimite())){
-            Thread.sleep(500);
-            indiceFuente = r.nextInt(fuentes.length);
+    public void run() {
+        try {
+            // Variables para cambiar fuentes
+            Font[] fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+            int indiceFuente;
+            int tamanioFuente;
+
+            // Bucle principal para generar números primos
+            while (!Thread.interrupted() && (modelo.gettamaniolistaprimos() < modelo.getnumerolimite())) {
+                Thread.sleep(400); // Pausa para simular la generación
+
+                // Cambiar la fuente del texto de forma aleatoria
+                indiceFuente = r.nextInt(fuentes.length);
                 tamanioFuente = (int) Math.round(Math.random() * (90 - 20 + 1) + 20);
                 Font fuente = new Font(fuentes[indiceFuente].getFontName(), Font.PLAIN, tamanioFuente);
-            
-            this.texto.setFont(fuente);
-                this.texto.setText(""+modelo.getnumeroevaluando());
-                
-                
-                Color c = new Color(r.nextInt(256),r.nextInt(256),r.nextInt(256),r.nextInt(256));
-                
+                this.texto.setFont(fuente);
+
+                // Mostrar el número evaluado
+                this.texto.setText("" + modelo.getnumeroevaluando());
+
+                // Cambiar el color del texto de forma aleatoria
+                Color c = new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256), r.nextInt(256));
                 this.texto.setForeground(c);
-            
-            if (Thread.interrupted()) {
-                break;
-            }
-            
-            for(int contadorsecundario = 1; contadorsecundario<=modelo.getnumeroevaluando(); contadorsecundario++){
-                int residuo = modelo.getnumeroevaluando()%contadorsecundario;
-                if(residuo == 0){
-                    cantidadaciertos++;
-                }
-                
-                if(cantidadaciertos>=3){
+
+                // Verificar si el hilo ha sido interrumpido
+                if (Thread.interrupted()) {
                     break;
                 }
+
+                // Verificar si el número actual es primo
+                for (int contadorsecundario = 1; contadorsecundario <= modelo.getnumeroevaluando(); contadorsecundario++) {
+                    int residuo = modelo.getnumeroevaluando() % contadorsecundario;
+                    if (residuo == 0) {
+                        cantidadaciertos++;
+                    }
+
+                    // Si tiene más de 2 divisores, no es primo
+                    if (cantidadaciertos >= 3) {
+                        break;
+                    }
+                }
+
+                // Si el número es primo
+                if (cantidadaciertos == 2) {
+                    modelo.setnumeroprimo(modelo.getnumeroevaluando());
+
+                    // Insertar el número primo usando el método insertar
+                    insertar(modelo.getnumeroevaluando());
+                }
+
+                cantidadaciertos = 0; // Reiniciar el contador de divisores
+                modelo.setnumeroevaluando(modelo.getnumeroevaluando() + 1); // Pasar al siguiente número
             }
-            
-            if(cantidadaciertos==2){
-                modelo.setnumeroprimo(modelo.getnumeroevaluando());
-                
-                simulador.getDibujo(this.spane, this.pane);
-                simulador.insertar(modelo.getnumeroevaluando());
-            }
-            cantidadaciertos = 0;
-            System.out.println("" + modelo.getnumeroevaluando());
-            modelo.setnumeroevaluando(modelo.getnumeroevaluando()+1);
+
+            cantidadaciertos = 0; // Reiniciar el contador al finalizar
+        } catch (InterruptedException ex) {
+            System.out.println("Error en el hilo: " + ex); // Manejar excepciones
         }
-        /*
-        for(int y = 0; y<= modelo.gettamaniolistaprimos()-1;y++){
-            System.out.println("" + modelo.getnumeroprimo(y));
-            simulador.insertar(modelo.getnumeroprimo(y));
-        }*/
-        
-        cantidadaciertos = 0;
-        }catch(Exception ex){ System.out.println("" + ex);}
     }
 }
