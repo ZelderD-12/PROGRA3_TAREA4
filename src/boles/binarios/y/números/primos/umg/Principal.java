@@ -337,12 +337,23 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void brtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtnBuscarActionPerformed
-    if(modelo.getnoexistelista()){
-           JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
-       }else{
-           simulador.buscar(Integer.parseInt(txtBusqueda.getText()));
-       }
-        
+        try {
+            // Obtener el número ingresado por el usuario
+            int numero = Integer.parseInt(txtBusqueda.getText());
+
+            // Usar el método buscar de GeneradorNumeros
+            boolean estaEnArbol = generadorprimoss.buscar(numero);
+
+            // Mostrar un mensaje con el resultado
+            if (estaEnArbol) {
+                JOptionPane.showMessageDialog(this, "El número " + numero + " está en el árbol.", "Resultado", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "El número " + numero + " NO está en el árbol.", "Resultado", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            // Manejar el caso en que el usuario no ingrese un número válido
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_brtnBuscarActionPerformed
 
     private void btnstopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstopActionPerformed
