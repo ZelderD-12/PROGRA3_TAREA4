@@ -10,8 +10,22 @@ public class SimuladorArbolBinario {
     public SimuladorArbolBinario() {        
     }
 
+    // Método para insertar un número de manera normal
     public boolean insertar(Integer dato) {
         return (this.miArbol.agregar(dato));
+    }
+
+    // Método para insertar un número específico primero
+    public boolean insertarPrimero(Integer numeroEspecifico, Integer dato) {
+        // Insertar el número específico primero
+        boolean insertado = this.miArbol.agregar(numeroEspecifico);
+        
+        // Insertar el número normal
+        if (insertado) {
+            insertado = this.miArbol.agregar(dato);
+        }
+
+        return insertado;
     }
 
     // Método para mostrar los recorridos del árbol
@@ -41,12 +55,17 @@ public class SimuladorArbolBinario {
         return (r);
     }
 
-    // Método para buscar dato en el nodo
+    // Método para buscar dato en el nodo (devuelve un String)
     public String buscar(Integer dato) {
         boolean siEsta = this.miArbol.existe(dato);
         String r = "El dato:" + dato.toString() + "\n";
         r += siEsta ? "Si se encuentra en el árbol" : "No se encuentra en el árbol";
         return (r);
+    }
+
+    // Método para buscar dato en el nodo (devuelve un booleano)
+    public boolean buscarNumero(Integer dato) {
+        return this.miArbol.existe(dato);
     }
 
     // Método para obtener el panel de dibujo del árbol
