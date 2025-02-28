@@ -47,7 +47,14 @@ public class GeneradorNumeros extends Thread {
         // Actualizar la vista del árbol
         simulador.getDibujo(this.spane, this.pane);
     }
+    
+   // Método para eliminar un número del árbol
+    public void eliminar(int numero) {
+    simulador.eliminar(numero);
 
+    // Actualizar la vista del árbol
+    simulador.getDibujo(this.spane, this.pane);
+}
     // Método para buscar un número en el árbol
      public boolean buscar(int numero) {
        return simulador.buscarNumero(numero);
