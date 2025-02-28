@@ -11,17 +11,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 
 public class Principal extends javax.swing.JFrame {
     private SimuladorArbolBinario simulador; // Instancia del simulador
     ModeloPrimos modelo = new ModeloPrimos();;
     GeneradorNumeros generadorprimoss;
+      
 
 
     public Principal() {
         initComponents();
         simulador = new SimuladorArbolBinario();
+        
         btnstart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnGuardarImagen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         brtnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -70,6 +73,7 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Generador de Números Primos");
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 17)); // NOI18N
@@ -112,6 +116,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(txtNumeros, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 150, -1));
 
+        btnstart.setBackground(new java.awt.Color(102, 255, 102));
         btnstart.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnstart.setText("Start!");
         btnstart.setEnabled(false);
@@ -145,6 +150,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(txtBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 350, 110, 30));
 
+        brtnBuscar.setBackground(new java.awt.Color(255, 204, 51));
         brtnBuscar.setText("Busqueda");
         brtnBuscar.setEnabled(false);
         brtnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -154,6 +160,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(brtnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, 140, 40));
 
+        btnInsertar.setBackground(new java.awt.Color(255, 204, 51));
         btnInsertar.setText("Insertar");
         btnInsertar.setEnabled(false);
         btnInsertar.addActionListener(new java.awt.event.ActionListener() {
@@ -163,6 +170,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(btnInsertar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 380, 140, 40));
 
+        btnEliminar.setBackground(new java.awt.Color(255, 204, 51));
         btnEliminar.setText("Eliminar");
         btnEliminar.setEnabled(false);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -172,9 +180,16 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 330, 140, 40));
 
+        btnLimpiar.setBackground(new java.awt.Color(255, 204, 51));
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 380, 140, 40));
 
+        btnGuardarImagen.setBackground(new java.awt.Color(204, 204, 204));
         btnGuardarImagen.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnGuardarImagen.setText("Guardar Imagen");
         btnGuardarImagen.setEnabled(false);
@@ -185,6 +200,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(btnGuardarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 220, 60));
 
+        btnpreorden.setBackground(new java.awt.Color(255, 204, 51));
         btnpreorden.setText("PreOrden");
         btnpreorden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,6 +209,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(btnpreorden, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 450, 110, -1));
 
+        btnpostorden.setBackground(new java.awt.Color(255, 204, 51));
         btnpostorden.setText("PostOrden");
         btnpostorden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +218,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(btnpostorden, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 450, 110, -1));
 
+        btninorder.setBackground(new java.awt.Color(255, 204, 51));
         btninorder.setText("InOrder");
         btninorder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -224,6 +242,7 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 380, 210));
 
+        btnstop.setBackground(new java.awt.Color(255, 102, 51));
         btnstop.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnstop.setText("Stop!");
         btnstop.setEnabled(false);
@@ -245,7 +264,7 @@ public class Principal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -257,11 +276,30 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBusquedaActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-      if(modelo.getnoexistelista()){
-           JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
-       }else{
-           
-       }
+   // Verificar si el campo de texto está vacío
+    if (txtBusqueda.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        // Obtener el número desde el campo de texto
+        int numero = Integer.parseInt(txtBusqueda.getText().trim());
+
+        // Si el hilo está activo, eliminar desde el hilo
+        if (generadorprimoss != null && generadorprimoss.isAlive()) {
+            generadorprimoss.eliminar(numero);
+        } 
+        // Si el hilo no está activo, eliminar de otra manera
+        else {
+           generadorprimoss.eliminar(numero);// Llamada a un método de eliminación alternativo
+        }
+
+        // Limpiar el campo de texto después de la eliminación
+        txtBusqueda.setText("");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnstartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstartActionPerformed
@@ -432,6 +470,36 @@ public class Principal extends javax.swing.JFrame {
            
        }
     }//GEN-LAST:event_btninorderActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+   // Verificar si el simulador está inicializado
+    if (simulador == null) {
+        JOptionPane.showMessageDialog(null, "El simulador no ha sido inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Borrar todo el árbol
+    simulador.borrarArbol();
+
+    // Reinicializar el objeto generador para que empiece desde cero
+    modelo = new ModeloPrimos();  // Se crea un nuevo modelo vacío
+    modelo.setnumerolimite(0);    // No hay límite porque está limpio
+    modelo.setnumeroevaluando(1); 
+
+    // Crear un nuevo objeto GeneradorNumeros (como hace el botón "Iniciar")
+    generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
+    this.lblnumeroevaluando.setText("");
+    this.txtNumeros.setText("");
+    // Actualizar el dibujo del árbol
+    JPanel nuevoDibujo = simulador.getDibujo(this.jScrollPane3, this.jPanel2);
+    jPanel2.removeAll();
+    jPanel2.add(nuevoDibujo);
+    jPanel2.revalidate();
+    jPanel2.repaint();
+
+    // Mostrar mensaje de confirmación
+    JOptionPane.showMessageDialog(null, "El árbol ha sido borrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments

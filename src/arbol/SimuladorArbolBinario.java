@@ -28,6 +28,16 @@ public class SimuladorArbolBinario {
         return insertado;
     }
 
+    // Método para eliminar un número del árbol
+    public boolean eliminar(Integer dato) {
+        return this.miArbol.eliminar(dato);
+    }
+   // Método para borrar todo el árbol
+    public void borrarArbol() {
+        miArbol.borrarArbol();
+    }
+    
+
     // Método para mostrar los recorridos del árbol
     public String preOrden() {
         LinkedList it = this.miArbol.preOrden();
