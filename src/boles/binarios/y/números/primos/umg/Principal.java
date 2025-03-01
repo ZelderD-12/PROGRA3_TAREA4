@@ -151,7 +151,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.add(txtBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 350, 110, 30));
 
         brtnBuscar.setBackground(new java.awt.Color(255, 204, 51));
-        brtnBuscar.setText("Busqueda");
+        brtnBuscar.setText("Búsqueda");
         brtnBuscar.setEnabled(false);
         brtnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
