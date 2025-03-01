@@ -1,65 +1,15 @@
 package arbol;
 
 import java.util.LinkedList;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class ArbolBB {
 
     private Nodo raiz;
-    int num_nodos;
-    int alt;
 
     public ArbolBB() {
         raiz = null;
-    }
-
-    public boolean agregar(int dato) {
-        Nodo nuevo = new Nodo(dato, null, null);
-        raiz = insertar(nuevo, raiz);
-        return true;
-    }
-
-    // Método para insertar un dato en el árbol (no acepta repetidos)
-    private Nodo insertar(Nodo nuevo, Nodo pivote) {
-        if (pivote == null) {
-            return nuevo;
-        } else {
-            if (nuevo.getDato() <= pivote.getDato()) {
-                pivote.setIzq(insertar(nuevo, pivote.getIzq()));
-            } else {
-                pivote.setDer(insertar(nuevo, pivote.getDer()));
-            }
-        }
-        return balancear(pivote);
-    }
-
-    // Método para balancear el árbol
-    private Nodo balancear(Nodo nodo) {
-        int balance = obtenerBalance(nodo);
-
-        // Rotación simple a la derecha
-        if (balance > 1 && obtenerBalance(nodo.getIzq()) >= 0) {
-            return rotarDerecha(nodo);
-        }
-
-        // Rotación simple a la izquierda
-        if (balance < -1 && obtenerBalance(nodo.getDer()) <= 0) {
-            return rotarIzquierda(nodo);
-        }
-
-        // Rotación doble izquierda-derecha
-        if (balance > 1 && obtenerBalance(nodo.getIzq()) < 0) {
-            nodo.setIzq(rotarIzquierda(nodo.getIzq()));
-            return rotarDerecha(nodo);
-        }
-
-        // Rotación doble derecha-izquierda
-        if (balance < -1 && obtenerBalance(nodo.getDer()) > 0) {
-            nodo.setDer(rotarDerecha(nodo.getDer()));
-            return rotarIzquierda(nodo);
-        }
-
-        return nodo;
     }
 
     // Método para obtener la altura de un nodo
@@ -67,11 +17,11 @@ public class ArbolBB {
         if (nodo == null) {
             return 0;
         }
-        return Math.max(altura(nodo.getIzq()), altura(nodo.getDer())) + 1;
+        return nodo.getAltura();
     }
 
-    // Método para obtener el balance de un nodo
-    private int obtenerBalance(Nodo nodo) {
+    // Método para calcular el balance de un nodo
+    private int getBalance(Nodo nodo) {
         if (nodo == null) {
             return 0;
         }
@@ -83,8 +33,13 @@ public class ArbolBB {
         Nodo x = y.getIzq();
         Nodo T2 = x.getDer();
 
+        // Realizar la rotación
         x.setDer(y);
         y.setIzq(T2);
+
+        // Actualizar alturas
+        y.setAltura(Math.max(altura(y.getIzq()), altura(y.getDer())) + 1);
+        x.setAltura(Math.max(altura(x.getIzq()), altura(x.getDer())) + 1);
 
         return x;
     }
@@ -94,10 +49,165 @@ public class ArbolBB {
         Nodo y = x.getDer();
         Nodo T2 = y.getIzq();
 
+        // Realizar la rotación
         y.setIzq(x);
         x.setDer(T2);
 
+        // Actualizar alturas
+        x.setAltura(Math.max(altura(x.getIzq()), altura(x.getDer())) + 1);
+        y.setAltura(Math.max(altura(y.getIzq()), altura(y.getDer())) + 1);
+
         return y;
+    }
+
+    // Método para insertar un nodo de manera balanceada
+    private Nodo insertarBalanceado(Nodo nodo, int dato) {
+        // Inserción normal en un árbol binario de búsqueda
+        if (nodo == null) {
+            return new Nodo(dato);
+        }
+
+        if (dato < nodo.getDato()) {
+            nodo.setIzq(insertarBalanceado(nodo.getIzq(), dato));
+        } else if (dato > nodo.getDato()) {
+            nodo.setDer(insertarBalanceado(nodo.getDer(), dato));
+        } else {
+            return nodo; // No se permiten duplicados
+        }
+
+        // Actualizar la altura del nodo actual
+        nodo.setAltura(1 + Math.max(altura(nodo.getIzq()), altura(nodo.getDer())));
+
+        // Obtener el factor de balance
+        int balance = getBalance(nodo);
+
+        // Casos de desbalance
+        // Rotación simple a la derecha
+        if (balance > 1 && dato < nodo.getIzq().getDato()) {
+            return rotarDerecha(nodo);
+        }
+
+        // Rotación simple a la izquierda
+        if (balance < -1 && dato > nodo.getDer().getDato()) {
+            return rotarIzquierda(nodo);
+        }
+
+        // Rotación izquierda-derecha
+        if (balance > 1 && dato > nodo.getIzq().getDato()) {
+            nodo.setIzq(rotarIzquierda(nodo.getIzq()));
+            return rotarDerecha(nodo);
+        }
+
+        // Rotación derecha-izquierda
+        if (balance < -1 && dato < nodo.getDer().getDato()) {
+            nodo.setDer(rotarDerecha(nodo.getDer()));
+            return rotarIzquierda(nodo);
+        }
+
+        return nodo;
+    }
+
+    // Método público para agregar un dato al árbol
+    public boolean agregar(int dato) {
+        raiz = insertarBalanceado(raiz, dato);
+        return true;
+    }
+
+    // Método para eliminar un nodo del árbol
+    public boolean eliminar(int dato) {
+        raiz = eliminarBalanceado(raiz, dato);
+        return true;
+    }
+
+    // Método privado para eliminar un nodo de manera balanceada
+    private Nodo eliminarBalanceado(Nodo nodo, int dato) {
+        if (nodo == null) {
+            return nodo;
+        }
+
+        // Buscar el nodo a eliminar
+        if (dato < nodo.getDato()) {
+            nodo.setIzq(eliminarBalanceado(nodo.getIzq(), dato));
+        } else if (dato > nodo.getDato()) {
+            nodo.setDer(eliminarBalanceado(nodo.getDer(), dato));
+        } else {
+            // Nodo con un solo hijo o sin hijos
+            if ((nodo.getIzq() == null) || (nodo.getDer() == null)) {
+                Nodo temp = null;
+                if (temp == nodo.getIzq()) {
+                    temp = nodo.getDer();
+                } else {
+                    temp = nodo.getIzq();
+                }
+
+                // Caso sin hijos
+                if (temp == null) {
+                    temp = nodo;
+                    nodo = null;
+                } else { // Caso con un hijo
+                    nodo = temp; // Copiar el contenido del hijo no nulo
+                }
+            } else {
+                // Nodo con dos hijos: obtener el sucesor inorden (el más pequeño en el subárbol derecho)
+                Nodo temp = encontrarMinimo(nodo.getDer());
+
+                // Copiar el dato del sucesor inorden
+                nodo.setDato(temp.getDato());
+
+                // Eliminar el sucesor inorden
+                nodo.setDer(eliminarBalanceado(nodo.getDer(), temp.getDato()));
+            }
+        }
+
+        // Si el árbol tenía solo un nodo, retornar
+        if (nodo == null) {
+            return nodo;
+        }
+
+        // Actualizar la altura del nodo actual
+        nodo.setAltura(1 + Math.max(altura(nodo.getIzq()), altura(nodo.getDer())));
+
+        // Obtener el factor de balance
+        int balance = getBalance(nodo);
+
+        // Casos de desbalance
+        // Rotación simple a la derecha
+        if (balance > 1 && getBalance(nodo.getIzq()) >= 0) {
+            return rotarDerecha(nodo);
+        }
+
+        // Rotación simple a la izquierda
+        if (balance < -1 && getBalance(nodo.getDer()) <= 0) {
+            return rotarIzquierda(nodo);
+        }
+
+        // Rotación izquierda-derecha
+        if (balance > 1 && getBalance(nodo.getIzq()) < 0) {
+            nodo.setIzq(rotarIzquierda(nodo.getIzq()));
+            return rotarDerecha(nodo);
+        }
+
+        // Rotación derecha-izquierda
+        if (balance < -1 && getBalance(nodo.getDer()) > 0) {
+            nodo.setDer(rotarDerecha(nodo.getDer()));
+            return rotarIzquierda(nodo);
+        }
+
+        return nodo;
+    }
+
+    // Método para encontrar el nodo con el valor mínimo
+    private Nodo encontrarMinimo(Nodo nodo) {
+        Nodo actual = nodo;
+        while (actual.getIzq() != null) {
+            actual = actual.getIzq();
+        }
+        return actual;
+    }
+    
+     // Método para borrar todo el árbol
+    public void borrarArbol() {
+        raiz = null; // Elimina toda la estructura del árbol
     }
 
     // Métodos de recorrido (preOrden, inOrden, postOrden)
@@ -143,7 +253,7 @@ public class ArbolBB {
         }
     }
 
-    // Método para verificar si un nodo existe en el árbol
+    // Método para verificar si un dato existe en el árbol
     public boolean existe(int dato) {
         Nodo aux = raiz;
         while (aux != null) {
@@ -156,21 +266,6 @@ public class ArbolBB {
             }
         }
         return false;
-    }
-
-    // Método para calcular la altura del árbol
-    private void altura(Nodo aux, int nivel) {
-        if (aux != null) {
-            altura(aux.getIzq(), nivel + 1);
-            alt = nivel;
-            altura(aux.getDer(), nivel + 1);
-        }
-    }
-
-    // Devuelve la altura del árbol
-    public int getAltura() {
-        altura(raiz, 1);
-        return alt;
     }
 
     // Método para obtener el panel de dibujo del árbol
@@ -186,7 +281,9 @@ public class ArbolBB {
         panel.revalidate(); // Revalida el panel
         panel.repaint(); // Repinta el panel
     }
+  
+    // Método para obtener la raíz del árbol
     public Nodo getRaiz() {
-    return raiz;
-}
+        return raiz;
+    }
 }
