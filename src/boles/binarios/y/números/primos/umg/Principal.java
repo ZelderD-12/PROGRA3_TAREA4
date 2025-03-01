@@ -87,6 +87,10 @@ public class Principal extends javax.swing.JFrame {
         panelNumeros.setBackground(new java.awt.Color(255, 255, 255));
         panelNumeros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblnumeroevaluando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblnumeroevaluando.setAlignmentX(0.5F);
+        lblnumeroevaluando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout panelNumerosLayout = new javax.swing.GroupLayout(panelNumeros);
         panelNumeros.setLayout(panelNumerosLayout);
         panelNumerosLayout.setHorizontalGroup(
