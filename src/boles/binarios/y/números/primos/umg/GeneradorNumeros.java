@@ -67,13 +67,24 @@ public class GeneradorNumeros extends Thread {
             Font[] fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
             int indiceFuente;
             int tamanioFuente;
-
+             int red, green, blue;
             // Bucle principal para generar números primos
             while (!Thread.interrupted() && (modelo.gettamaniolistaprimos() < modelo.getnumerolimite())) {
                 Thread.sleep(400); // Pausa para simular la generación
 
                 // Cambiar la fuente del texto de forma aleatoria
-                indiceFuente = r.nextInt(fuentes.length);
+                // Filtramos las fuentes y elegimos una fuente que es más probable que no genere "cuadritos"
+do {
+    indiceFuente = r.nextInt(fuentes.length);
+    // Aquí, podemos verificar si la fuente tiene un tipo específico (TrueType) o aplicar otro filtro
+    Font fuenteSeleccionada = fuentes[indiceFuente];
+
+    // Revisa si la fuente seleccionada es TrueType (con una extensión específica)
+    if (fuenteSeleccionada.getName().contains("Dialog") || fuenteSeleccionada.getName().contains("Serif") || fuenteSeleccionada.getName().contains("Sans")) {
+        break;  // Solo continuar si la fuente es aceptable
+    }
+
+} while (true);
                 tamanioFuente = (int) Math.round(Math.random() * (90 - 20 + 1) + 20);
                 Font fuente = new Font(fuentes[indiceFuente].getFontName(), Font.PLAIN, tamanioFuente);
                 this.texto.setFont(fuente);
@@ -82,8 +93,15 @@ public class GeneradorNumeros extends Thread {
                 this.texto.setText("" + modelo.getnumeroevaluando());
 
                 // Cambiar el color del texto de forma aleatoria
-                Color c = new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256), r.nextInt(256));
-                this.texto.setForeground(c);
+             int umbral = 200;  
+do {
+    red = r.nextInt(256);
+    green = r.nextInt(256);
+    blue = r.nextInt(256);
+} while ((red > umbral && green > umbral && blue > umbral)); // Si es blanco, vuelve a generar
+
+Color c = new Color(red, green, blue, r.nextInt(256));
+this.texto.setForeground(c);
 
                 // Verificar si el hilo ha sido interrumpido
                 if (Thread.interrupted()) {

@@ -123,6 +123,11 @@
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="lblnumeroevaluando">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="alignmentX" type="float" value="0.5"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -200,7 +205,7 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="cc" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Busqueda"/>
+            <Property name="text" type="java.lang.String" value="B&#xfa;squeda"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
