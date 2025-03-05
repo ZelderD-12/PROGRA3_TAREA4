@@ -53,8 +53,6 @@ public class Principal extends javax.swing.JFrame {
         lblnumeroevaluando = new javax.swing.JLabel();
         txtNumeros = new javax.swing.JTextField();
         btnstart = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         txtBusqueda = new javax.swing.JTextField();
         brtnBuscar = new javax.swing.JButton();
         btnInsertar = new javax.swing.JButton();
@@ -67,6 +65,8 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         btnstop = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txaRecorrido = new javax.swing.JTextArea();
 
         jLabel1.setText("jLabel1");
 
@@ -126,13 +126,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnstart, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 220, 50));
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, 460, 90));
 
         txtBusqueda.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txtBusqueda.addActionListener(new java.awt.event.ActionListener() {
@@ -252,6 +245,12 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnstop, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 450, 220, 50));
+
+        txaRecorrido.setColumns(20);
+        txaRecorrido.setRows(5);
+        jScrollPane2.setViewportView(txaRecorrido);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 500, 460, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -552,11 +551,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblnumeroevaluando;
     private javax.swing.JPanel panelNumeros;
+    private javax.swing.JTextArea txaRecorrido;
     private javax.swing.JTextField txtBusqueda;
     private javax.swing.JTextField txtNumeros;
     // End of variables declaration//GEN-END:variables
