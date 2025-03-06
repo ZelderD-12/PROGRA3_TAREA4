@@ -41,17 +41,17 @@ public class SimuladorArbolBinario {
     // Método para mostrar los recorridos del árbol
     public String preOrden() {
         LinkedList it = this.miArbol.preOrden();
-        return (recorrido(it, "Recorrido PreOrden"));
+        return (recorrido(it, "Recorrido PreOrden:"));
     }
 
     public String inOrden() {
         LinkedList it = this.miArbol.inOrden();
-        return (recorrido(it, "Recorrido InOrden"));
+        return (recorrido(it, "Recorrido InOrden:"));
     }
 
     public String postOrden() {
         LinkedList it = this.miArbol.postOrden();
-        return (recorrido(it, "Recorrido PosOrden"));
+        return (recorrido(it, "Recorrido PosOrden:"));
     }
 
     // Método para poder mostrar los tipos de recorrido
