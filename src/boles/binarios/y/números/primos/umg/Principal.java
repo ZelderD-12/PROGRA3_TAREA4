@@ -1,7 +1,9 @@
 package boles.binarios.y.números.primos.umg;
 
 import Modelos.ModeloPrimos;
+import arbol.Nodo;
 import arbol.SimuladorArbolBinario;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -13,18 +15,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 public class Principal extends javax.swing.JFrame {
-    private SimuladorArbolBinario simulador; // Instancia del simulador
-    ModeloPrimos modelo = new ModeloPrimos();;
-    GeneradorNumeros generadorprimoss;
-      
 
+    private SimuladorArbolBinario simulador; // Instancia del simulador
+    ModeloPrimos modelo = new ModeloPrimos();
+    ;
+    GeneradorNumeros generadorprimoss;
 
     public Principal() {
         initComponents();
         simulador = new SimuladorArbolBinario();
-        
+
         btnstart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnGuardarImagen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         brtnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -36,10 +37,11 @@ public class Principal extends javax.swing.JFrame {
         btnstop.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btninorder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         
+        txaRecorrido.setEditable(false);
+        txaRecorrido.setBackground(Color.WHITE);
+        txaRecorrido.setForeground(Color.BLACK);
+
     }
-
-
- 
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -63,7 +65,7 @@ public class Principal extends javax.swing.JFrame {
         btnpostorden = new javax.swing.JButton();
         btninorder = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
+        pnlArbol = new javax.swing.JPanel();
         btnstop = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaRecorrido = new javax.swing.JTextArea();
@@ -212,7 +214,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.add(btnpostorden, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 450, 110, -1));
 
         btninorder.setBackground(new java.awt.Color(255, 204, 51));
-        btninorder.setText("InOrder");
+        btninorder.setText("InOrden");
         btninorder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btninorderActionPerformed(evt);
@@ -220,18 +222,18 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(btninorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 450, 110, -1));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlArbolLayout = new javax.swing.GroupLayout(pnlArbol);
+        pnlArbol.setLayout(pnlArbolLayout);
+        pnlArbolLayout.setHorizontalGroup(
+            pnlArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 378, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlArbolLayout.setVerticalGroup(
+            pnlArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 208, Short.MAX_VALUE)
         );
 
-        jScrollPane3.setViewportView(jPanel2);
+        jScrollPane3.setViewportView(pnlArbol);
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 380, 210));
 
@@ -275,102 +277,102 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBusquedaActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-   // Verificar si el campo de texto está vacío
-    if (txtBusqueda.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    try {
-        // Obtener el número desde el campo de texto
-        int numero = Integer.parseInt(txtBusqueda.getText().trim());
-
-        // Si el hilo está activo, eliminar desde el hilo
-        if (generadorprimoss != null && generadorprimoss.isAlive()) {
-            generadorprimoss.eliminar(numero);
-        } 
-        // Si el hilo no está activo, eliminar de otra manera
-        else {
-           generadorprimoss.eliminar(numero);// Llamada a un método de eliminación alternativo
+        // Verificar si el campo de texto está vacío
+        if (txtBusqueda.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        // Limpiar el campo de texto después de la eliminación
-        txtBusqueda.setText("");
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        try {
+            // Obtener el número desde el campo de texto
+            int numero = Integer.parseInt(txtBusqueda.getText().trim());
+
+            // Si el hilo está activo, eliminar desde el hilo
+            if (generadorprimoss != null && generadorprimoss.isAlive()) {
+                generadorprimoss.eliminar(numero);
+            } // Si el hilo no está activo, eliminar de otra manera
+            else {
+                generadorprimoss.eliminar(numero);// Llamada a un método de eliminación alternativo
+            }
+
+            // Limpiar el campo de texto después de la eliminación
+            txtBusqueda.setText("");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnstartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstartActionPerformed
-        
-        if(generadorprimoss != null){
-        if(!generadorprimoss.isAlive()){
-        int numerosolicitado = Integer.parseInt(txtNumeros.getText());
-       modelo = new ModeloPrimos();
-       modelo.setnumerolimite(numerosolicitado);
-       modelo.setnumeroevaluando(1);
-       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
-        generadorprimoss.start();
-        }else{
-            JOptionPane.showMessageDialog(null, "Tienes que esperar hasta que la solicitud anterior haya concluido.", "Espera", JOptionPane.ERROR_MESSAGE);
+
+        if (generadorprimoss != null) {
+            if (!generadorprimoss.isAlive()) {
+                int numerosolicitado = Integer.parseInt(txtNumeros.getText());
+                modelo = new ModeloPrimos();
+                modelo.setnumerolimite(numerosolicitado);
+                modelo.setnumeroevaluando(1);
+                generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.pnlArbol);
+                generadorprimoss.start();
+            } else {
+                JOptionPane.showMessageDialog(null, "Tienes que esperar hasta que la solicitud anterior haya concluido.", "Espera", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            int numerosolicitado = Integer.parseInt(txtNumeros.getText());
+            modelo = new ModeloPrimos();
+            modelo.setnumerolimite(numerosolicitado);
+            modelo.setnumeroevaluando(1);
+            generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.pnlArbol);
+            generadorprimoss.start();
         }
-        }else{
-          int numerosolicitado = Integer.parseInt(txtNumeros.getText());
-       modelo = new ModeloPrimos();
-       modelo.setnumerolimite(numerosolicitado);
-       modelo.setnumeroevaluando(1);
-       generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
-        generadorprimoss.start();  
-        } 
+
     }//GEN-LAST:event_btnstartActionPerformed
 
     private void btnGuardarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarImagenActionPerformed
-        if(lblnumeroevaluando.getText().isEmpty()){
-        JOptionPane.showMessageDialog(null, "Ningún número ha sido evaluado o esta siendo evaluado.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }else{
-        // Crear un BufferedImage en el que se dibujará el JLabel
-        BufferedImage image = new BufferedImage(panelNumeros.getWidth(), panelNumeros.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.createGraphics();
-        
-        // Renderizar el JLabel en la imagen
-        panelNumeros.paint(g);
-        g.dispose();
-        
-        // Guardar la imagen en un archivo (opcional)
-        try {
-            ImageIO.write(image, "PNG", new File("./imagen#"+lblnumeroevaluando.getText()+".png"));
-            System.out.println("Imagen guardada como imagen#"+lblnumeroevaluando.getText()+".png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (lblnumeroevaluando.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ningún número ha sido evaluado o esta siendo evaluado.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            // Crear un BufferedImage en el que se dibujará el JLabel
+            BufferedImage image = new BufferedImage(panelNumeros.getWidth(), panelNumeros.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics g = image.createGraphics();
+
+            // Renderizar el JLabel en la imagen
+            panelNumeros.paint(g);
+            g.dispose();
+
+            // Guardar la imagen en un archivo (opcional)
+            try {
+                ImageIO.write(image, "PNG", new File("./imagen#" + lblnumeroevaluando.getText() + ".png"));
+                System.out.println("Imagen guardada como imagen#" + lblnumeroevaluando.getText() + ".png");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnGuardarImagenActionPerformed
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         // Verificar si el campo de texto está vacío
-    if (txtBusqueda.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    try {
-        // Obtener el número desde el campo de texto
-        int numero = Integer.parseInt(txtBusqueda.getText().trim());
-
-        // Verificar si el hilo está activo
-        if (generadorprimoss != null && generadorprimoss.isAlive()) {
-            // Si el hilo está activo, insertar el número primero
-            generadorprimoss.insertarPrimero(numero);
-        } else {
-            // Si el hilo no está activo, insertar el número normalmente
-            generadorprimoss.insertar(numero);
+        if (txtBusqueda.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        // Limpiar el campo de texto después de la inserción
-        txtBusqueda.setText("");
+        try {
+            // Obtener el número desde el campo de texto
+            int numero = Integer.parseInt(txtBusqueda.getText().trim());
+
+            // Verificar si el hilo está activo
+            if (generadorprimoss != null && generadorprimoss.isAlive()) {
+                // Si el hilo está activo, insertar el número primero
+                generadorprimoss.insertarPrimero(numero);
+            } else {
+                // Si el hilo no está activo, insertar el número normalmente
+                generadorprimoss.insertar(numero);
+            }
+
+            // Limpiar el campo de texto después de la inserción
+            txtBusqueda.setText("");
         } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
-       }
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido en el campo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void brtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtnBuscarActionPerformed
@@ -394,110 +396,134 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_brtnBuscarActionPerformed
 
     private void btnstopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstopActionPerformed
-        
-        if(generadorprimoss != null){
-        if(generadorprimoss.isAlive()){
-        generadorprimoss.interrupt();
-        }else{
-           JOptionPane.showMessageDialog(null, "No existe nada que detener actualmente.", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+        if (generadorprimoss != null) {
+            if (generadorprimoss.isAlive()) {
+                generadorprimoss.interrupt();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe nada que detener actualmente.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No existe nada que detener actualmente.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        }else{
-          JOptionPane.showMessageDialog(null, "No existe nada que detener actualmente.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        } 
     }//GEN-LAST:event_btnstopActionPerformed
 
     private void txtNumerosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumerosKeyTyped
-       char c = evt.getKeyChar();
-      
-      if(!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE){
-          evt.consume();
-      }
+        char c = evt.getKeyChar();
+
+        if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtNumerosKeyTyped
 
     private void txtBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyTyped
-       char c = evt.getKeyChar();
-      
-      if(!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE){
-          evt.consume();
-      }
+        char c = evt.getKeyChar();
+
+        if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtBusquedaKeyTyped
 
     private void txtNumerosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumerosKeyReleased
-       if(txtNumeros.getText().isEmpty()){
-          btnstart.setEnabled(false);
-          btnstop.setEnabled(false);
-          btnGuardarImagen.setEnabled(false);
-      }else{
-          btnstart.setEnabled(true);
-          btnstop.setEnabled(true);
-          btnGuardarImagen.setEnabled(true);
-      }
+        if (txtNumeros.getText().isEmpty()) {
+            btnstart.setEnabled(false);
+            btnstop.setEnabled(false);
+            btnGuardarImagen.setEnabled(false);
+        } else {
+            btnstart.setEnabled(true);
+            btnstop.setEnabled(true);
+            btnGuardarImagen.setEnabled(true);
+        }
     }//GEN-LAST:event_txtNumerosKeyReleased
 
     private void txtBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyReleased
-      if(txtBusqueda.getText().isEmpty()){
-          brtnBuscar.setEnabled(false);
-          btnEliminar.setEnabled(false);
-          btnInsertar.setEnabled(false);
-      }else{
-          brtnBuscar.setEnabled(true);
-          btnEliminar.setEnabled(true);
-          btnInsertar.setEnabled(true);
-      }
+        if (txtBusqueda.getText().isEmpty()) {
+            brtnBuscar.setEnabled(false);
+            btnEliminar.setEnabled(false);
+            btnInsertar.setEnabled(false);
+        } else {
+            brtnBuscar.setEnabled(true);
+            btnEliminar.setEnabled(true);
+            btnInsertar.setEnabled(true);
+        }
     }//GEN-LAST:event_txtBusquedaKeyReleased
 
     private void btnpreordenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpreordenActionPerformed
-       if(modelo.getnoexistelista()){
-           JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
-       }else{
-           
-       }
+        if (modelo.getnoexistelista()) {
+            JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            //Limpiar antes el txaRecorrido
+            txaRecorrido.setText("");
+            
+            // Llamar al método obtenerRecorridoPreorden() para obtener el recorrido
+            String recorrido = generadorprimoss.obtenerRecorridoPreorden(); // Asumiendo que 'generador' es la instancia de GeneradorNumeros
+
+            // Mostrar el recorrido en el JTextArea
+            txaRecorrido.setText(recorrido); // Esto pone el recorrido en el JTextArea
+        }
     }//GEN-LAST:event_btnpreordenActionPerformed
 
     private void btnpostordenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpostordenActionPerformed
-      if(modelo.getnoexistelista()){
-           JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
-       }else{
-           
-       }
+        if (modelo.getnoexistelista()) {
+            JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            //Limpiar antes el txaRecorrido
+            txaRecorrido.setText("");
+            
+            // Llamar al método obtenerRecorridoPreorden() para obtener el recorrido
+            String recorrido = generadorprimoss.obtenerRecorridoPostorden(); // Asumiendo que 'generador' es la instancia de GeneradorNumeros
+
+            // Mostrar el recorrido en el JTextArea
+            txaRecorrido.setText(recorrido); // Esto pone el recorrido en el JTextArea
+        }
     }//GEN-LAST:event_btnpostordenActionPerformed
 
     private void btninorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninorderActionPerformed
-      if(modelo.getnoexistelista()){
-           JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
-       }else{
-           
-       }
+        if (modelo.getnoexistelista()) {
+            JOptionPane.showMessageDialog(null, "No existe un árbol para evaluar.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            //Limpiar antes el txaRecorrido
+            txaRecorrido.setText("");
+            
+            // Llamar al método obtenerRecorridoPreorden() para obtener el recorrido
+            String recorrido = generadorprimoss.obtenerRecorridoInorden(); // Asumiendo que 'generador' es la instancia de GeneradorNumeros
+
+            // Mostrar el recorrido en el JTextArea
+            txaRecorrido.setText(recorrido); // Esto pone el recorrido en el JTextArea
+        }
     }//GEN-LAST:event_btninorderActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-   // Verificar si el simulador está inicializado
-    if (simulador == null) {
-        JOptionPane.showMessageDialog(null, "El simulador no ha sido inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        // Verificar si el simulador está inicializado
+        if (simulador == null) {
+            JOptionPane.showMessageDialog(null, "El simulador no ha sido inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    // Borrar todo el árbol
-    simulador.borrarArbol();
+        // Borrar todo el árbol
+        simulador.borrarArbol();
 
-    // Reinicializar el objeto generador para que empiece desde cero
-    modelo = new ModeloPrimos();  // Se crea un nuevo modelo vacío
-    modelo.setnumerolimite(0);    // No hay límite porque está limpio
-    modelo.setnumeroevaluando(1); 
+        // Reinicializar el objeto generador para que empiece desde cero
+        modelo = new ModeloPrimos();  // Se crea un nuevo modelo vacío
+        modelo.setnumerolimite(0);    // No hay límite porque está limpio
+        modelo.setnumeroevaluando(1);
 
-    // Crear un nuevo objeto GeneradorNumeros (como hace el botón "Iniciar")
-    generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.jPanel2);
-    this.lblnumeroevaluando.setText("");
-    this.txtNumeros.setText("");
-    // Actualizar el dibujo del árbol
-    JPanel nuevoDibujo = simulador.getDibujo(this.jScrollPane3, this.jPanel2);
-    jPanel2.removeAll();
-    jPanel2.add(nuevoDibujo);
-    jPanel2.revalidate();
-    jPanel2.repaint();
+        // Crear un nuevo objeto GeneradorNumeros (como hace el botón "Iniciar")
+        generadorprimoss = new GeneradorNumeros(modelo, lblnumeroevaluando, jScrollPane3, this.pnlArbol);
+        this.lblnumeroevaluando.setText("");
+        this.txtNumeros.setText("");
+        // Actualizar el dibujo del árbol
+        JPanel nuevoDibujo = simulador.getDibujo(this.jScrollPane3, this.pnlArbol);
+        pnlArbol.removeAll();
+        pnlArbol.add(nuevoDibujo);
+        pnlArbol.revalidate();
+        pnlArbol.repaint();
+        
+        txaRecorrido.setText(""); //Limpia el jtextarea de los Ordenamientos
 
-    // Mostrar mensaje de confirmación
-    JOptionPane.showMessageDialog(null, "El árbol ha sido borrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        // Mostrar mensaje de confirmación
+        JOptionPane.showMessageDialog(null, "El árbol ha sido borrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
@@ -550,11 +576,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblnumeroevaluando;
     private javax.swing.JPanel panelNumeros;
+    private javax.swing.JPanel pnlArbol;
     private javax.swing.JTextArea txaRecorrido;
     private javax.swing.JTextField txtBusqueda;
     private javax.swing.JTextField txtNumeros;
