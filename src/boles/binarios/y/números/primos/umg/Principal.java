@@ -89,6 +89,10 @@ public class Principal extends javax.swing.JFrame {
         panelNumeros.setBackground(new java.awt.Color(255, 255, 255));
         panelNumeros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblnumeroevaluando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblnumeroevaluando.setAlignmentX(0.5F);
+        lblnumeroevaluando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout panelNumerosLayout = new javax.swing.GroupLayout(panelNumeros);
         panelNumeros.setLayout(panelNumerosLayout);
         panelNumerosLayout.setHorizontalGroup(
@@ -146,7 +150,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.add(txtBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 350, 110, 30));
 
         brtnBuscar.setBackground(new java.awt.Color(255, 204, 51));
-        brtnBuscar.setText("Busqueda");
+        brtnBuscar.setText("Búsqueda");
         brtnBuscar.setEnabled(false);
         brtnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,15 +262,11 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 840, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
         );
 
         pack();
